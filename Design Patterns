@@ -1,0 +1,157 @@
+1. Implementing the Singleton Pattern
+
+class Logger {
+
+    // Single instance
+    private static Logger instance;
+
+    // Private constructor
+    private Logger() {
+        System.out.println("Logger Instance Created");
+    }
+
+    // Method to get instance
+    public static Logger getInstance() {
+
+        if (instance == null) {
+            instance = new Logger();
+        }
+
+        return instance;
+    }
+
+    public void log(String message) {
+        System.out.println("LOG: " + message);
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Logger logger1 = Logger.getInstance();
+
+        Logger logger2 = Logger.getInstance();
+
+        logger1.log("Application Started");
+
+        logger2.log("Data Saved");
+
+        System.out.println(
+                "Same Object? " +
+                (logger1 == logger2)
+        );
+    }
+}
+
+2. Implementing the factory pattern
+// Document Interface
+
+interface Document {
+
+    void open();
+}
+
+// Word Document
+
+class WordDocument implements Document {
+
+    public void open() {
+
+        System.out.println(
+                "Opening Word Document"
+        );
+    }
+}
+
+// PDF Document
+
+class PdfDocument implements Document {
+
+    public void open() {
+
+        System.out.println(
+                "Opening PDF Document"
+        );
+    }
+}
+
+// Excel Document
+
+class ExcelDocument implements Document {
+
+    public void open() {
+
+        System.out.println(
+                "Opening Excel Document"
+        );
+    }
+}
+
+// Abstract Factory
+
+abstract class DocumentFactory {
+
+    abstract Document createDocument();
+}
+
+// Word Factory
+
+class WordFactory extends DocumentFactory {
+
+    Document createDocument() {
+
+        return new WordDocument();
+    }
+}
+
+// PDF Factory
+
+class PdfFactory extends DocumentFactory {
+
+    Document createDocument() {
+
+        return new PdfDocument();
+    }
+}
+
+// Excel Factory
+
+class ExcelFactory extends DocumentFactory {
+
+    Document createDocument() {
+
+        return new ExcelDocument();
+    }
+}
+
+// Main Class
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        DocumentFactory factory;
+
+        factory = new WordFactory();
+
+        Document doc1 =
+                factory.createDocument();
+
+        doc1.open();
+
+        factory = new PdfFactory();
+
+        Document doc2 =
+                factory.createDocument();
+
+        doc2.open();
+
+        factory = new ExcelFactory();
+
+        Document doc3 =
+                factory.createDocument();
+
+        doc3.open();
+    }
+}
