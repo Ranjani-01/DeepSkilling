@@ -1,0 +1,211 @@
+1. Control Structures
+Scenario 1: Apply 1% discount for customers above 60
+SET SERVEROUTPUT ON;
+
+DECLARE
+
+    CURSOR c_customers IS
+        SELECT CustomerID, Age
+        FROM Customers;
+
+BEGIN
+
+    FOR cust IN c_customers LOOP
+
+        IF cust.Age > 60 THEN
+
+            UPDATE Loans
+            SET InterestRate = InterestRate - 1
+            WHERE CustomerID = cust.CustomerID;
+
+            DBMS_OUTPUT.PUT_LINE(
+                'Discount Applied for Customer ID: '
+                || cust.CustomerID
+            );
+
+        END IF;
+
+    END LOOP;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Interest Rate Update Completed'
+    );
+
+END;
+/
+
+Scenario @: Promote Customers to VIP
+SET SERVEROUTPUT ON;
+
+DECLARE
+
+    CURSOR c_customers IS
+        SELECT CustomerID, Balance
+        FROM Customers;
+
+BEGIN
+
+    FOR cust IN c_customers LOOP
+
+        IF cust.Balance > 10000 THEN
+
+            UPDATE Customers
+            SET IsVIP = 'TRUE'
+            WHERE CustomerID = cust.CustomerID;
+
+            DBMS_OUTPUT.PUT_LINE(
+                'Customer '
+                || cust.CustomerID
+                || ' Promoted to VIP'
+            );
+
+        END IF;
+
+    END LOOP;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'VIP Promotion Completed'
+    );
+
+END;
+/
+Scenario 3: Loan due reminder within next 30 days
+SET SERVEROUTPUT ON;
+
+DECLARE
+
+    CURSOR c_loans IS
+
+        SELECT LoanID,
+               CustomerID,
+               DueDate
+        FROM Loans
+
+        WHERE DueDate BETWEEN SYSDATE
+                          AND SYSDATE + 30;
+
+BEGIN
+
+    FOR loan_rec IN c_loans LOOP
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Reminder: Customer '
+            || loan_rec.CustomerID
+            || ' Loan ID '
+            || loan_rec.LoanID
+            || ' Due Date: '
+            || loan_rec.DueDate
+        );
+
+    END LOOP;
+
+END;
+/
+
+3. Stored Procedures
+Scenario 1: Process Monthly Interest
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest
+IS
+BEGIN
+
+    UPDATE Accounts
+    SET Balance = Balance + (Balance * 0.01)
+    WHERE AccountType = 'SAVINGS';
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Monthly Interest Processed Successfully'
+    );
+
+END;
+/
+BEGIN
+    ProcessMonthlyInterest;
+END;
+/
+
+Scenario 2: Update Employee Bonus
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus(
+    p_department IN VARCHAR2,
+    p_bonus      IN NUMBER
+)
+IS
+BEGIN
+
+    UPDATE Employees
+    SET Salary = Salary +
+                 (Salary * p_bonus / 100)
+    WHERE Department = p_department;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Bonus Updated Successfully'
+    );
+
+END;
+/
+BEGIN
+    UpdateEmployeeBonus(
+        'IT',
+        10
+    );
+END;
+/
+
+Scenario 3: Transfer Funds
+CREATE OR REPLACE PROCEDURE TransferFunds(
+    p_fromAccount IN NUMBER,
+    p_toAccount   IN NUMBER,
+    p_amount      IN NUMBER
+)
+IS
+
+    v_balance NUMBER;
+
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID = p_fromAccount;
+
+    IF v_balance >= p_amount THEN
+
+        UPDATE Accounts
+        SET Balance = Balance - p_amount
+        WHERE AccountID = p_fromAccount;
+
+        UPDATE Accounts
+        SET Balance = Balance + p_amount
+        WHERE AccountID = p_toAccount;
+
+        COMMIT;
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Transfer Successful'
+        );
+
+    ELSE
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Insufficient Balance'
+        );
+
+    END IF;
+
+END;
+/
+BEGIN
+    TransferFunds(
+        101,
+        102,
+        500
+    );
+END;
+/
