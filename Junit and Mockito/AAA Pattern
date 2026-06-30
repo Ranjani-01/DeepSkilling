@@ -1,0 +1,36 @@
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.TestInstance;
+import static org.junit.jupiter.api.Assertions.*;
+//@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class test {
+    test(){
+        System.out.println("test");
+    }
+
+    @BeforeAll
+    static void beforeAll(){
+        System.out.println("before all");
+    }
+    @AfterAll
+    static void afterAll(){
+        System.out.println("after all");
+    }
+    @BeforeEach
+    void beforeEach(){
+        System.out.println("before each test");
+    }
+    @Test
+    void test1(){
+        System.out.println("test1");
+    }
+    @Test
+    void test2(){
+        System.out.println("test2");
+    }
+    @AfterEach
+    void afterEach(){
+        System.out.println("after each test");
+    }
+
+}
