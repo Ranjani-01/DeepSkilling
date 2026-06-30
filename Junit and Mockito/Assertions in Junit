@@ -1,0 +1,45 @@
+Main.java
+
+package org.example;
+
+public class Main {
+
+    public int divide(int a, int b) {
+        return a / b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public boolean greater(int a, int b) {
+        return a > b;
+    }
+
+    public boolean less(int a, int b) {
+        return a < b;
+    }
+}
+
+test.java
+
+import org.example.Main;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class test {
+
+    @Test
+    void divide() {
+
+        Main calc = new Main();
+
+        assertEquals(2, calc.divide(10,5));
+
+        assertEquals(50, calc.multiply(10,5));
+
+        assertTrue(calc.greater(10,5));
+
+        assertFalse(calc.greater(5,10));
+    }
+}
