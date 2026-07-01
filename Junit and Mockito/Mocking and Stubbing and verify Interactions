@@ -1,0 +1,37 @@
+1. StudentInterface.java
+package org.example;
+
+public interface StudentInterface {
+    String getStudentName();
+}
+
+2. StudentService.java
+package org.example;
+
+public class StudentService {
+    StudentInterface repo;
+    public StudentService(StudentInterface repo){
+        this.repo=repo;
+    }
+    public String getName(){
+        return repo.getStudentName();
+    }
+}
+
+3. StudentTest.java
+import org.example.StudentInterface;
+import org.example.StudentService;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+public class StudentTest {
+    @Test
+            void test() {
+        StudentInterface repo = mock(StudentInterface.class);
+        when(repo.getStudentName()).thenReturn("Ranjani");
+        StudentService service =new StudentService(repo);
+        service.getName();
+        verify(repo).getStudentName();
+    }
+}
