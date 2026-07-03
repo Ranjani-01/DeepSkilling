@@ -1,0 +1,48 @@
+# Difference between JPA, Hibernate and Spring Data JPA
+
+## What is JPA?
+
+- JPA (Java Persistence API) is a specification for Object Relational Mapping (ORM).
+- It defines a standard way to map Java objects to database tables.
+- JPA itself does not provide an implementation.
+- Example: EntityManager, @Entity, @Id.
+
+## What is Hibernate?
+
+- Hibernate is an implementation of the JPA specification.
+- It provides the actual ORM functionality.
+- Hibernate converts Java objects into database records and vice versa.
+- It generates SQL queries automatically.
+
+## What is Spring Data JPA?
+
+- Spring Data JPA is a Spring Framework module built on top of JPA.
+- It reduces boilerplate code by providing repository interfaces.
+- By extending JpaRepository, developers get CRUD operations without writing implementation code.
+- It internally uses a JPA implementation such as Hibernate.
+
+## Relationship
+
+JPA (Specification)
+        ↓
+Hibernate (Implementation)
+        ↓
+Spring Data JPA (Repository Abstraction)
+        ↓
+Application
+
+## Comparison
+
+| Feature | JPA | Hibernate | Spring Data JPA |
+|---------|-----|-----------|-----------------|
+| Type | Specification | JPA Implementation | Spring Module |
+| Purpose | Defines ORM rules | Implements ORM | Simplifies database access |
+| SQL Generation | No | Yes | Uses Hibernate internally |
+| CRUD Operations | Manual | Manual | Automatic using JpaRepository |
+| Dependency | Requires implementation | Can work independently | Depends on JPA and Hibernate |
+
+## Conclusion
+
+- JPA defines the standard for ORM.
+- Hibernate implements the JPA specification.
+- Spring Data JPA simplifies database operations by using JPA and Hibernate internally, reducing boilerplate code and providing easy CRUD functionality.
